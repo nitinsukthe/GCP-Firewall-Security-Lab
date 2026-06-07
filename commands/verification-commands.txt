@@ -1,0 +1,188 @@
+# ==========================================================
+# GCP Firewall Security Lab - Verification Commands
+# ==========================================================
+# Purpose:
+# Validate Compute Engine VM deployment, SSH access,
+# network configuration, and basic Linux administration.
+# ==========================================================
+
+# ----------------------------------------------------------
+# 1. Verify Hostname
+# ----------------------------------------------------------
+
+hostname
+
+# Expected Output:
+# secure-vm
+
+
+# ----------------------------------------------------------
+# 2. Verify Logged-In User
+# ----------------------------------------------------------
+
+whoami
+
+# Expected Output:
+# <your-username>
+
+
+# ----------------------------------------------------------
+# 3. Display Current User Information
+# ----------------------------------------------------------
+
+id
+
+
+# ----------------------------------------------------------
+# 4. Verify Network Interfaces
+# ----------------------------------------------------------
+
+ip addr
+
+# Purpose:
+# Confirm VM network interface configuration
+# and assigned internal IP address.
+
+
+# ----------------------------------------------------------
+# 5. Display Routing Table
+# ----------------------------------------------------------
+
+ip route
+
+# Purpose:
+# Verify default gateway and network routing.
+
+
+# ----------------------------------------------------------
+# 6. Display Host IP Addresses
+# ----------------------------------------------------------
+
+hostname -I
+
+
+# ----------------------------------------------------------
+# 7. Verify Internet Connectivity
+# ----------------------------------------------------------
+
+ping -c 4 8.8.8.8
+
+# Expected:
+# Successful replies from Google DNS.
+
+
+# ----------------------------------------------------------
+# 8. Verify DNS Resolution
+# ----------------------------------------------------------
+
+ping -c 4 google.com
+
+# Expected:
+# Successful DNS name resolution.
+
+
+# ----------------------------------------------------------
+# 9. Check System Information
+# ----------------------------------------------------------
+
+uname -a
+
+# Purpose:
+# Display Linux kernel and OS details.
+
+
+# ----------------------------------------------------------
+# 10. Check Operating System Version
+# ----------------------------------------------------------
+
+cat /etc/os-release
+
+
+# ----------------------------------------------------------
+# 11. Verify Running Processes
+# ----------------------------------------------------------
+
+ps aux
+
+
+# ----------------------------------------------------------
+# 12. Verify Disk Usage
+# ----------------------------------------------------------
+
+df -h
+
+
+# ----------------------------------------------------------
+# 13. Verify Memory Usage
+# ----------------------------------------------------------
+
+free -h
+
+
+# ----------------------------------------------------------
+# 14. Verify System Uptime
+# ----------------------------------------------------------
+
+uptime
+
+
+# ----------------------------------------------------------
+# 15. Verify Active Network Connections
+# ----------------------------------------------------------
+
+ss -tuln
+
+# Purpose:
+# Display listening ports and network services.
+
+
+# ----------------------------------------------------------
+# 16. Verify SSH Service Status
+# ----------------------------------------------------------
+
+sudo systemctl status ssh
+
+# Expected:
+# Active (running)
+
+
+# ----------------------------------------------------------
+# 17. View Recent Login Activity
+# ----------------------------------------------------------
+
+last
+
+
+# ----------------------------------------------------------
+# 18. Verify Firewall Security Validation
+# ----------------------------------------------------------
+
+# Validation Performed:
+
+# ✓ SSH access successfully established
+# ✓ Hostname verified
+# ✓ User verified
+# ✓ Network interface verified
+# ✓ Firewall rule applied
+# ✓ Access restricted using source IP filtering
+# ✓ Principle of Least Privilege implemented
+
+
+# ==========================================================
+# Project Verification Summary
+# ==========================================================
+
+# Infrastructure Validation:
+# ✓ Compute Engine VM Created
+# ✓ Debian Linux Installed
+# ✓ SSH Connectivity Verified
+
+# Network Security Validation:
+# ✓ Firewall Rule Created
+# ✓ SSH Port 22 Restricted
+# ✓ Trusted Source IP Configured
+# ✓ Network Tag Applied
+
+# Cleanup Validation:
+# ✓ VM Deleted
+# ✓ Firewall Rule Deleted
