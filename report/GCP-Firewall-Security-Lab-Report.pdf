@@ -1,0 +1,490 @@
+For a recruiter-level report, the PDF should read like a real Cloud Security Assessment Report rather than a student lab document. Below is the complete content structure you can place into **GCP-Firewall-Security-Lab-Report.pdf**.
+
+---
+
+# GCP Firewall Security Lab
+
+## Secure Remote Access Implementation using Google Cloud VPC Firewall Rules
+
+### Author
+
+Nitin Sukthe
+
+### Role
+
+Future Cloud Security Engineer 
+
+### Platform
+
+Google Cloud Platform (GCP)
+
+### Project Type
+
+Cloud Network Security Lab
+
+### Date
+
+June 2026
+
+---
+
+# Executive Summary
+
+This project demonstrates the implementation of secure network access controls within Google Cloud Platform (GCP) using VPC Firewall Rules and Compute Engine.
+
+The primary objective was to reduce the attack surface of a cloud-hosted virtual machine by restricting SSH access (TCP Port 22) to a trusted source IP address rather than allowing unrestricted Internet access.
+
+The project follows cloud security best practices including:
+
+* Principle of Least Privilege
+* Network Segmentation
+* Source IP Restriction
+* Secure Administrative Access
+* Attack Surface Reduction
+
+The environment was deployed, tested, validated, and securely decommissioned after completion.
+
+---
+
+# Project Objectives
+
+The goals of this lab were:
+
+### Infrastructure Security
+
+* Deploy a secure Compute Engine VM
+* Configure network-level access controls
+* Validate administrative access
+
+### Network Security
+
+* Restrict SSH access using firewall policies
+* Apply network tags to control traffic
+* Limit inbound access to a trusted IP
+
+### Cloud Security Operations
+
+* Verify security configurations
+* Validate firewall effectiveness
+* Document cloud security controls
+
+---
+
+# Lab Architecture
+
+```text
+                     Internet
+                          |
+                          |
+                    Trusted Public IP
+                    152.59.xxx.xxx
+                          |
+                          |
+                GCP VPC Firewall Rule
+               Allow TCP/22 Only
+                          |
+                          |
+                    secure-vm
+                 Debian Linux VM
+                          |
+                          |
+                   Internal VPC
+                   10.160.0.0/20
+```
+
+---
+
+# Environment Details
+
+| Component        | Configuration         |
+| ---------------- | --------------------- |
+| Cloud Provider   | Google Cloud Platform |
+| Service          | Compute Engine        |
+| Operating System | Debian GNU/Linux 12   |
+| VM Name          | secure-vm             |
+| Machine Type     | e2-micro              |
+| Region           | asia-south1           |
+| Zone             | asia-south1-b         |
+| Network          | default VPC           |
+| Firewall Rule    | allow-ssh-from-my-ip  |
+| Protocol         | TCP                   |
+| Port             | 22                    |
+| Access Control   | Source IP Restricted  |
+
+---
+
+# Security Risks Identified
+
+Before implementing the firewall rule, SSH access could potentially be exposed to unauthorized users if broad firewall permissions were configured.
+
+Potential risks included:
+
+### Brute Force Attacks
+
+Attackers scanning the Internet for exposed SSH services could attempt password guessing attacks.
+
+### Unauthorized Access Attempts
+
+Publicly accessible SSH services increase the risk of unauthorized login attempts.
+
+### Reconnaissance Activity
+
+Open administrative services provide valuable information to attackers during enumeration.
+
+### Increased Attack Surface
+
+Unrestricted access unnecessarily exposes management interfaces.
+
+---
+
+# Security Control Implementation
+
+## Step 1 – Enable Compute Engine API
+
+The Compute Engine API was enabled to allow virtual machine provisioning and management within the project.
+
+### Result
+
+Compute Engine resources became available for deployment.
+
+---
+
+## Step 2 – Create Compute Engine Instance
+
+A Debian-based virtual machine named:
+
+```text
+secure-vm
+```
+
+was created.
+
+### Security Considerations
+
+* Minimal resource allocation
+* Linux operating system
+* Dedicated management instance
+
+---
+
+## Step 3 – Create Network Tag
+
+A custom network tag was configured:
+
+```text
+ssh-secure
+```
+
+### Purpose
+
+The tag allows firewall rules to target only specific resources.
+
+### Benefit
+
+Improves segmentation and reduces unnecessary rule exposure.
+
+---
+
+## Step 4 – Identify Trusted Public IP Address
+
+The administrator's public IP address was identified.
+
+Example:
+
+```text
+152.59.198.175
+```
+
+This address was used as the only trusted source for SSH access.
+
+---
+
+## Step 5 – Create Firewall Rule
+
+A custom ingress firewall rule was created.
+
+### Configuration
+
+| Setting    | Value             |
+| ---------- | ----------------- |
+| Direction  | Ingress           |
+| Action     | Allow             |
+| Protocol   | TCP               |
+| Port       | 22                |
+| Source     | Trusted Public IP |
+| Target Tag | ssh-secure        |
+
+### Security Benefit
+
+Only a trusted administrator can establish SSH connections.
+
+---
+
+## Step 6 – Apply Firewall Rule
+
+The firewall rule was associated with:
+
+```text
+ssh-secure
+```
+
+network tag.
+
+### Result
+
+Only tagged instances receive the firewall policy.
+
+---
+
+## Step 7 – Validate Secure Access
+
+SSH access was tested successfully using:
+
+```bash
+hostname
+whoami
+ip addr
+```
+
+### Validation Results
+
+Hostname:
+
+```text
+secure-vm
+```
+
+User:
+
+```text
+sukthenitin
+```
+
+Internal IP:
+
+```text
+10.160.0.2
+```
+
+---
+
+# Security Assessment
+
+## Principle of Least Privilege
+
+Implemented successfully.
+
+Access was restricted to:
+
+```text
+Single Public IP
+Single Protocol
+Single Port
+Single VM
+```
+
+---
+
+## Network Segmentation
+
+Implemented successfully using:
+
+```text
+Network Tags
+Firewall Rules
+```
+
+---
+
+## Administrative Access Protection
+
+Implemented successfully.
+
+Only approved administrators can access the VM.
+
+---
+
+## Exposure Reduction
+
+Risk Level Before:
+
+```text
+Medium
+```
+
+Risk Level After:
+
+```text
+Low
+```
+
+---
+
+# Validation Evidence
+
+The following validations were performed.
+
+### Hostname Verification
+
+```bash
+hostname
+```
+
+Output:
+
+```text
+secure-vm
+```
+
+---
+
+### User Verification
+
+```bash
+whoami
+```
+
+Output:
+
+```text
+sukthenitin
+```
+
+---
+
+### Network Verification
+
+```bash
+ip addr
+```
+
+Output:
+
+```text
+10.160.0.2
+```
+
+---
+
+### Firewall Verification
+
+Firewall rule confirmed:
+
+```text
+allow-ssh-from-my-ip
+```
+
+Protocol:
+
+```text
+TCP/22
+```
+
+Source:
+
+```text
+Trusted Public IP
+```
+
+Target:
+
+```text
+ssh-secure
+```
+
+---
+
+# Cloud Security Best Practices Applied
+
+### Principle of Least Privilege
+
+Only required access granted.
+
+### Secure Administrative Access
+
+SSH restricted to trusted source.
+
+### Network-Level Security
+
+Firewall controls enforced before reaching the host.
+
+### Attack Surface Reduction
+
+No unnecessary ports exposed.
+
+### Resource Isolation
+
+Network tags used to isolate policy application.
+
+### Temporary Lab Infrastructure
+
+Resources removed after testing.
+
+---
+
+# Cleanup Activities
+
+To prevent unnecessary cloud costs and maintain a secure environment, all resources were removed.
+
+### Deleted Resources
+
+* Compute Engine VM
+* Custom Firewall Rule
+* Temporary Security Configurations
+
+### Validation
+
+Project billing after cleanup:
+
+```text
+₹0.00
+```
+
+---
+
+# Skills Demonstrated
+
+### Cloud Security
+
+* Google Cloud Platform
+* Compute Engine Security
+* VPC Security
+* Firewall Management
+
+### Networking
+
+* TCP/IP
+* SSH
+* Public vs Private IP Addressing
+* Ingress Filtering
+
+### Security Operations
+
+* Access Control
+* Security Validation
+* Attack Surface Reduction
+* Security Documentation
+
+---
+
+# Key Learning Outcomes
+
+Through this project, I gained hands-on experience in:
+
+* Deploying secure cloud infrastructure
+* Configuring VPC firewall rules
+* Restricting administrative access
+* Implementing network segmentation
+* Applying cloud security best practices
+* Validating security controls
+* Performing secure resource cleanup
+
+---
+
+# Conclusion
+
+This project successfully demonstrated the implementation of secure remote administrative access in Google Cloud Platform through the use of VPC Firewall Rules and network segmentation.
+
+By restricting SSH access to a trusted public IP address and applying targeted firewall policies using network tags, the environment adhered to industry-recommended cloud security practices.
+
+The lab provided practical experience with cloud infrastructure security, network access control, and secure cloud operations, aligning closely with the responsibilities of an entry-level Cloud Security Engineer.
